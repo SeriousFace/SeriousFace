@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="80dp">
+    <ImageView
+        android:id="@+id/img_one"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:src="@drawable/ico70_postimg"
+        android:scaleType="fitXY"/>
+    <ImageView
+        android:id="@+id/img_delete_one"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_gravity="right"
+        android:src="@drawable/ico16_delete"
+        android:visibility="gone"/>
+</FrameLayout>
