@@ -57,7 +57,7 @@ public class UploadPhotoAdapter extends BaseAdapter {
             vh.img_one.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    action.setPhoto();
+                    action.setChoosePhotoAction();
                 }
             });
         }else{
@@ -65,7 +65,7 @@ public class UploadPhotoAdapter extends BaseAdapter {
             vh.img_one.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    action.setCheckPhoto(position);
+                    action.setCheckPhotoAction(position);
                 }
             });
             Glide.with(context).load(map.get("url")).into(vh.img_one);
@@ -73,7 +73,7 @@ public class UploadPhotoAdapter extends BaseAdapter {
             vh.img_delete_one.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    action.setAction(position);
+                    action.setDeleteAction(position);
                 }
             });
         }
@@ -86,9 +86,9 @@ public class UploadPhotoAdapter extends BaseAdapter {
     }
 
     public interface Action{
-        public void setAction(int position);
-        public void setPhoto();
-        public void setCheckPhoto(int position);
+        public void setDeleteAction(int position);
+        public void setChoosePhotoAction();
+        public void setCheckPhotoAction(int position);
     }
 }
 

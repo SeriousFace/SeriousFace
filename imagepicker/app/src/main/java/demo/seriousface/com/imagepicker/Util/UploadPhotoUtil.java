@@ -1,11 +1,7 @@
-package demo.seriousface.com.imagepicker;
+package demo.seriousface.com.imagepicker.Util;
 
 import android.app.Activity;
 import android.content.Context;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.GridView;
-import android.widget.ListAdapter;
 import android.widget.Toast;
 
 import com.pizidea.imagepicker.AndroidImagePicker;

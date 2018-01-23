@@ -1,4 +1,4 @@
-package demo.seriousface.com.imagepicker;
+package demo.seriousface.com.imagepicker.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 
 import demo.seriousface.com.imagepicker.Adapter.UploadPhotoAdapter;
+import demo.seriousface.com.imagepicker.R;
+import demo.seriousface.com.imagepicker.Util.UploadPhotoUtil;
 
 public class MainActivity extends AppCompatActivity {
     private GridView gv;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
     UploadPhotoAdapter.Action action = new UploadPhotoAdapter.Action() {
         //删除图片
         @Override
-        public void setAction(int position) {
+        public void setDeleteAction(int position) {
             Map<String,String> map = list.get(list.size()-1);
             if (list.size() == MaxSelect && !map.get("status").equalsIgnoreCase("1")){
                 list.remove(position);
@@ -62,14 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
         //选择图片
         @Override
-        public void setPhoto() {
+        public void setChoosePhotoAction() {
             //请求读写SD卡授权
             uploadPhotoUtil.getPhototPermission(MainActivity.this ,choosePhoto);
         }
 
         //点击已经选择好的图片，进行查看图片操作
         @Override
-        public void setCheckPhoto(int position) {
+        public void setCheckPhotoAction(int position) {
             String[] ImgUrlGroup ;//初始化有效图片资源数组
             if(list.get(list.size()-1).get("status").equalsIgnoreCase("1")){//如果gridview中包含默认获取图片资源按钮，则不把该数据保持到数组中
                 ImgUrlGroup = new String[list.size()-1];

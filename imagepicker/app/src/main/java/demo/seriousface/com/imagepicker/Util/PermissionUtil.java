@@ -1,4 +1,4 @@
-package demo.seriousface.com.imagepicker;
+package demo.seriousface.com.imagepicker.Util;
 
 import android.Manifest;
 import android.app.Activity;
