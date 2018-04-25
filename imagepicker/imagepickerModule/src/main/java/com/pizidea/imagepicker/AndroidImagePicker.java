@@ -19,6 +19,7 @@
 package com.pizidea.imagepicker;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -29,6 +30,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.pizidea.imagepicker.bean.ImageItem;
 import com.pizidea.imagepicker.bean.ImageSet;
@@ -402,23 +404,36 @@ public class AndroidImagePicker {
      * take picture
      */
     public void takePicture(Fragment fragment, int requestCode) throws IOException {
+        try{
+            Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            // Ensure that there's a camera activity to handle the intent
+            if (takePictureIntent.resolveActivity(fragment.getContext().getPackageManager()) != null) {
+                // Create the File where the photo should go
+                File photoFile = createImageSaveFile(fragment.getContext());
 
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        //Intent takePictureIntent = new Intent(MediaStore.INTENT_ACTION_STILL_IMAGE_CAMERA);
-        takePictureIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(fragment.getContext().getPackageManager()) != null) {
-            // Create the File where the photo should go
-            //File photoFile = createImageFile();
-            File photoFile = createImageSaveFile(fragment.getContext());
-            // Continue only if the File was successfully created
-            if (photoFile != null) {
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
-                Log.i(TAG,"=====file ready to take photo:"+photoFile.getAbsolutePath() );
+                //适配android 系统7.0 API 25以上版本兼容问题，API 25以上不允许uri作为隐式跳转的参数进行传递
+                int currentapiVersion = android.os.Build.VERSION.SDK_INT;
+                Log.e("currentapiVersion","currentapiVersion====>"+currentapiVersion);
+                if (currentapiVersion<24){
+                    if (photoFile != null) {
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                        Log.i(TAG,"=====file ready to take photo:"+photoFile.getAbsolutePath() );
+                    }
+                    fragment.startActivityForResult(takePictureIntent, requestCode);
+                }else {
+                    ContentValues contentValues = new ContentValues(1);
+                    contentValues.put(MediaStore.Images.Media.DATA, photoFile.getAbsolutePath());
+                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, fragment.getContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,contentValues));
+                    fragment.startActivityForResult(takePictureIntent, requestCode);
+                }
+                //
             }
-        }
-        fragment.startActivityForResult(takePictureIntent, requestCode);
 
+        }catch (Exception e){
+            Toast.makeText(fragment.getContext() , "获取系统拍照功能受阻，请在手机设置里面授权" , Toast.LENGTH_SHORT).show();
+            Log.e("调用系统摄像功能error" , e+"");
+        }
     }
 
     /**
